@@ -667,7 +667,7 @@ static KVNProgressConfiguration *configuration;
 	self.circleProgressView.layer.cornerRadius = (self.configuration.circleSize / 2.0f);
 	self.circleProgressView.layer.masksToBounds = YES;
 	self.circleProgressView.backgroundColor = [UIColor clearColor];
-	
+	[self.circleProgressView.layer setMasksToBounds:YES];
 	// Remove all previous added layers
 	[self removeAllSubLayersOfLayer:self.circleProgressView.layer];
 }
@@ -688,7 +688,7 @@ static KVNProgressConfiguration *configuration;
 	self.circleProgressLineLayer.strokeColor = self.configuration.circleStrokeForegroundColor.CGColor;
 	self.circleProgressLineLayer.fillColor = self.configuration.circleFillBackgroundColor.CGColor;
 	self.circleProgressLineLayer.lineWidth = self.configuration.lineWidth;
-	
+	[self.circleProgressView.layer setMasksToBounds:YES];
 	[self.circleProgressView.layer addSublayer:self.circleProgressLineLayer];
 	
 	[self.circleProgressLineLayer removeAllAnimations];
@@ -721,9 +721,10 @@ static KVNProgressConfiguration *configuration;
 	self.circleBackgroundLineLayer.fillColor = self.configuration.circleFillBackgroundColor.CGColor;
 	self.circleBackgroundLineLayer.lineWidth = self.configuration.lineWidth;
 	
+    [self.circleProgressView.layer setMasksToBounds:YES];
 	[self.circleProgressView.layer addSublayer:self.circleBackgroundLineLayer];
 	[self.circleProgressView.layer addSublayer:self.circleProgressLineLayer];
-	
+    
 	[self.circleProgressLineLayer removeAllAnimations];
 	[self.circleProgressView.layer removeAllAnimations];
 	
@@ -749,6 +750,7 @@ static KVNProgressConfiguration *configuration;
 	self.checkmarkLayer.strokeColor = self.configuration.successColor.CGColor;
 	self.checkmarkLayer.lineWidth = self.configuration.lineWidth;
 	
+    [self.circleProgressView.layer setMasksToBounds:YES];
 	[self.circleProgressView.layer addSublayer:self.circleProgressLineLayer];
 	[self.circleProgressView.layer addSublayer:self.checkmarkLayer];
 	
@@ -777,6 +779,7 @@ static KVNProgressConfiguration *configuration;
 	self.crossLayer.strokeColor = self.configuration.errorColor.CGColor;
 	self.crossLayer.lineWidth = self.configuration.lineWidth;
 	
+    [self.circleProgressView.layer setMasksToBounds:YES];
 	[self.circleProgressView.layer addSublayer:self.circleProgressLineLayer];
 	[self.circleProgressView.layer addSublayer:self.crossLayer];
 	
@@ -794,7 +797,9 @@ static KVNProgressConfiguration *configuration;
     self.customImageLayer = [CAShapeLayer layer];
     self.customImageLayer.frame = self.circleProgressView.bounds;
     self.customImageLayer.contents = (id)[self.customImage CGImage];
+    self.customImageLayer.contentsGravity = kCAGravityResizeAspectFill;
     
+    [self.circleProgressView.layer setMasksToBounds:NO];
     [self.circleProgressView.layer addSublayer:self.customImageLayer];
     
     [self.circleProgressLineLayer removeAllAnimations];
@@ -830,7 +835,7 @@ static KVNProgressConfiguration *configuration;
 	self.stopLayer = [CAShapeLayer layer];
 	self.stopLayer.path = stopPath.CGPath;
 	self.stopLayer.fillColor = self.configuration.stopColor.CGColor;
-	
+	[self.circleProgressView.layer setMasksToBounds:YES];
 	[self.circleProgressView.layer addSublayer:self.circleProgressLineLayer];
 	[self.circleProgressView.layer addSublayer:self.stopLayer];
 	

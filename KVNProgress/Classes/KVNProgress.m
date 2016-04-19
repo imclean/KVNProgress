@@ -25,7 +25,8 @@ typedef NS_ENUM(NSUInteger, KVNProgressStyle) {
 	KVNProgressStyleHidden,
 	KVNProgressStyleProgress,
 	KVNProgressStyleSuccess,
-	KVNProgressStyleError
+	KVNProgressStyleError,
+    KVNProgressStyleCustom
 };
 
 typedef NS_ENUM(NSUInteger, KVNProgressState) {
@@ -79,6 +80,8 @@ static KVNProgressConfiguration *configuration;
 @property (nonatomic, strong) CAShapeLayer *stopLayer;
 
 @property (nonatomic) UIStatusBarStyle rootControllerStatusBarStyle;
+
+@property (nonatomic, strong) UIImage *customImage;
 
 // Constraints
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *circleProgressViewWidthConstraint;
@@ -333,6 +336,7 @@ static KVNProgressConfiguration *configuration;
 				  superview:(UIView *)superview
 				 completion:(KVNCompletionBlock)completion
 {
+    [[self sharedView] setCustomImage:nil];
 	[[self sharedView] showProgress:progress
 							 status:status
 							  style:style
@@ -340,6 +344,20 @@ static KVNProgressConfiguration *configuration;
 						 fullScreen:configuration.fullScreen
 							   view:superview
 						 completion:completion];
+}
+
++ (void)showHUDWithStatus:(NSString *)status
+                     image:(UIImage *)image
+                 completion:(KVNCompletionBlock)completion
+{
+    [[self sharedView] setCustomImage:image];
+    [[self sharedView] showProgress:KVNProgressIndeterminate
+                             status:status
+                              style:KVNProgressStyleCustom
+                     backgroundType:configuration.backgroundType
+                         fullScreen:configuration.fullScreen
+                               view:nil
+                         completion:completion];
 }
 
 - (void)showProgress:(CGFloat)progress
@@ -456,6 +474,9 @@ static KVNProgressConfiguration *configuration;
 			case KVNProgressStyleHidden:
 				// should never happen
 				return;
+            case KVNProgressStyleCustom:
+                delay = self.configuration.minimumSuccessDisplayTime;
+                return;
 		}
 		
 		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -837,6 +858,26 @@ static KVNProgressConfiguration *configuration;
 	[self updateStatusConstraints];
 }
 
+-(void)setupCustomImage {
+    [self setupFullRoundCircleWithColor:self.configuration.errorColor];
+    
+    self.stopLayer.opacity = 0.0f;
+    
+    self.crossLayer = [CAShapeLayer layer];
+    self.crossLayer.contents = (id)[self.customImage CGImage];
+    self.crossLayer.fillColor = nil;
+    self.crossLayer.strokeColor = self.configuration.errorColor.CGColor;
+    self.crossLayer.lineWidth = self.configuration.lineWidth;
+    
+    [self.circleProgressView.layer addSublayer:self.circleProgressLineLayer];
+    [self.circleProgressView.layer addSublayer:self.crossLayer];
+    
+    [self.circleProgressLineLayer removeAllAnimations];
+    [self.circleProgressView.layer removeAllAnimations];
+    [self.crossLayer removeAllAnimations];
+    [self animateError];
+}
+
 - (void)setupBackground
 {
 	if ([self.class isVisible]) {
@@ -1104,6 +1145,10 @@ static KVNProgressConfiguration *configuration;
 			// should enver happen
 			break;
 		}
+        case KVNProgressStyleCustom: {
+            [self setupCustomImage];
+            break;
+        }
 	}
 }
 

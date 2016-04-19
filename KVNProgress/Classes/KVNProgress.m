@@ -328,6 +328,21 @@ static KVNProgressConfiguration *configuration;
 				   completion:completion];
 }
 
+#pragma mark Custom Image
++ (void)showCustomImageWithStatus:(NSString *)status
+                            image:(UIImage *)image
+                       completion:(KVNCompletionBlock)completion
+{
+    [[self sharedView] setCustomImage:image];
+    [[self sharedView] showProgress:KVNProgressIndeterminate
+                             status:status
+                              style:KVNProgressStyleCustom
+                     backgroundType:configuration.backgroundType
+                         fullScreen:configuration.fullScreen
+                               view:nil
+                         completion:completion];
+}
+
 #pragma mark - Show
 
 + (void)showHUDWithProgress:(CGFloat)progress
@@ -344,20 +359,6 @@ static KVNProgressConfiguration *configuration;
 						 fullScreen:configuration.fullScreen
 							   view:superview
 						 completion:completion];
-}
-
-+ (void)showHUDWithStatus:(NSString *)status
-                     image:(UIImage *)image
-                 completion:(KVNCompletionBlock)completion
-{
-    [[self sharedView] setCustomImage:image];
-    [[self sharedView] showProgress:KVNProgressIndeterminate
-                             status:status
-                              style:KVNProgressStyleCustom
-                     backgroundType:configuration.backgroundType
-                         fullScreen:configuration.fullScreen
-                               view:nil
-                         completion:completion];
 }
 
 - (void)showProgress:(CGFloat)progress

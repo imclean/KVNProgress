@@ -164,9 +164,9 @@ typedef void (^KVNCompletionBlock)(void);
  @param superview The superview on which to add the progress view. Pass <code>nil</code> to add to main window.
  @param completion The completion handler called after the view is completely dismissed.
  */
-+ (void)showHUDWithStatus:(NSString *)status
-                    image:(UIImage *)image
-               completion:(KVNCompletionBlock)completion;
++ (void)showCustomImageWithStatus:(NSString *)status
+                            image:(UIImage *)image
+                       completion:(KVNCompletionBlock)completion;
 
 #pragma mark - Dimiss
 

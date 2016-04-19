@@ -797,7 +797,7 @@ static KVNProgressConfiguration *configuration;
     self.customImageLayer = [CAShapeLayer layer];
     self.customImageLayer.frame = self.circleProgressView.bounds;
     self.customImageLayer.contents = (id)[self.customImage CGImage];
-    self.customImageLayer.contentsGravity = kCAGravityResizeAspectFill;
+    self.customImageLayer.contentsGravity = kCAGravityResizeAspect;
     
     [self.circleProgressView.layer setMasksToBounds:NO];
     [self.circleProgressView.layer addSublayer:self.customImageLayer];

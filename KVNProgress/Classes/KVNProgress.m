@@ -75,6 +75,7 @@ static KVNProgressConfiguration *configuration;
 
 @property (nonatomic, strong) CAShapeLayer *checkmarkLayer;
 @property (nonatomic, strong) CAShapeLayer *crossLayer;
+@property (nonatomic, strong) CAShapeLayer *customImageLayer;
 @property (nonatomic, strong) CAShapeLayer *circleProgressLineLayer;
 @property (nonatomic, strong) CAShapeLayer *circleBackgroundLineLayer;
 @property (nonatomic, strong) CAShapeLayer *stopLayer;
@@ -785,6 +786,23 @@ static KVNProgressConfiguration *configuration;
 	[self animateError];
 }
 
+-(void)setupCustomImage {
+    [self setupFullRoundCircleWithColor:[UIColor clearColor]];
+    
+    self.stopLayer.opacity = 0.0f;
+    
+    self.customImageLayer = [CAShapeLayer layer];
+    self.customImageLayer.frame = self.circleProgressView.bounds;
+    self.customImageLayer.contents = (id)[self.customImage CGImage];
+    
+    [self.circleProgressView.layer addSublayer:self.customImageLayer];
+    
+    [self.circleProgressLineLayer removeAllAnimations];
+    [self.circleProgressView.layer removeAllAnimations];
+    [self.customImageLayer removeAllAnimations];
+}
+
+
 - (void)setupStopUI
 {
 	if (![self.configuration doesShowStop]
@@ -857,26 +875,6 @@ static KVNProgressConfiguration *configuration;
 	self.statusLabel.hidden = !showStatus;
 	
 	[self updateStatusConstraints];
-}
-
--(void)setupCustomImage {
-    [self setupFullRoundCircleWithColor:self.configuration.errorColor];
-    
-    self.stopLayer.opacity = 0.0f;
-    
-    self.crossLayer = [CAShapeLayer layer];
-    self.crossLayer.contents = (id)[self.customImage CGImage];
-    self.crossLayer.fillColor = nil;
-    self.crossLayer.strokeColor = self.configuration.errorColor.CGColor;
-    self.crossLayer.lineWidth = self.configuration.lineWidth;
-    
-    [self.circleProgressView.layer addSublayer:self.circleProgressLineLayer];
-    [self.circleProgressView.layer addSublayer:self.crossLayer];
-    
-    [self.circleProgressLineLayer removeAllAnimations];
-    [self.circleProgressView.layer removeAllAnimations];
-    [self.crossLayer removeAllAnimations];
-    [self animateError];
 }
 
 - (void)setupBackground

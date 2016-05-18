@@ -59,7 +59,6 @@ static KVNProgressConfiguration *configuration;
 
 @property (nonatomic) CGFloat progress;
 @property (nonatomic) KVNProgressBackgroundType backgroundType;
-@property (nonatomic) NSString *status;
 @property (nonatomic) KVNProgressStyle style;
 @property (nonatomic) KVNProgressConfiguration *configuration;
 @property (nonatomic) NSDate *showActionTrigerredDate;

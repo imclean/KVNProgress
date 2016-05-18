@@ -151,9 +151,11 @@
 
 - (IBAction)showCustomImage
 {
-    [KVNProgress showHUDWithStatus:@"Custom Image" image:[UIImage imageNamed:@"testImage"] completion:^{
-        
-    }];
+    [KVNProgress showCustomImageWithStatus:@"Custom image"
+                                     image:[UIImage imageNamed:@"testImage"]
+                                completion:^{
+                                    
+                                }];
     
     dispatch_main_after(5.5f, ^{
         [self showSuccess];

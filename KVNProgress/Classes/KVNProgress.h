@@ -16,7 +16,7 @@ typedef void (^KVNCompletionBlock)(void);
 
 #pragma mark - Configuration
 + (KVNProgress *)sharedView;
-@property (nonatomic) NSString *status;
+@property (nonatomic,strong) NSString *status;
 /**
  Configuration of the <code>KVNProgress</code> UI.
  By default, equals to <code>[KVNProgressConfiguration defaultConfiguration]</code>.

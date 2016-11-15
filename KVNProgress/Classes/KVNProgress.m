@@ -430,7 +430,7 @@ static KVNProgressConfiguration *configuration;
 		[UIView animateWithDuration:KVNLayoutAnimationDuration
 						 animations:^{
 							 [KVNBlockSelf setupUI:NO];
-                             [KVNBlockSelf setupConstraintsForMinWidth:200.f];
+                             [KVNBlockSelf setupConstraintsForMinWidth:280.f];
 						 }];
 		
 		KVNBlockSelf.showActionTrigerredDate = [NSDate date];
@@ -446,7 +446,7 @@ static KVNProgressConfiguration *configuration;
 		
 		[self setupUI:YES];
         if (width > self.configuration.hudWidth) {
-            [self setupConstraintsForMinWidth:200.0];
+            [self setupConstraintsForMinWidth:280.0];
         }
 		self.animateAppearanceOperation = [NSBlockOperation blockOperationWithBlock:^{
 			[KVNBlockSelf animateUI];

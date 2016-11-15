@@ -651,7 +651,7 @@ static KVNProgressConfiguration *configuration;
             if (contentWidth > self.configuration.hudWidth) {
                 contentWidth = self.configuration.hudWidth;
             }
-            if (minWidth < self.configuration.hudWidth) {
+            if (minWidth > self.configuration.hudWidth) {
                 contentWidth = minWidth;
             }
         }

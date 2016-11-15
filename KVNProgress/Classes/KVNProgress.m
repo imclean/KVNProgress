@@ -415,6 +415,10 @@ static KVNProgressConfiguration *configuration;
 	self.waitingToChangeHUD = NO;
 	self.progress = progress;
 	self.status = [status copy];
+    float width = [status sizeWithAttributes:@{NSFontAttributeName:self.configuration.statusFont}].width;
+    if (width > self.configuration.hudWidth) {
+        [self setupConstraintsForMinWidth:200.0];
+    }
 	self.style = style;
 	self.backgroundType = backgroundType;
 	self.fullScreen = fullScreen;
@@ -618,6 +622,46 @@ static KVNProgressConfiguration *configuration;
 		UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(performTapBlock)];
 		[self addGestureRecognizer:tapGestureRecognizer];
 	}
+}
+
+- (void)setupConstraintsForMinWidth:(CGFloat)minWidth
+{
+    CGRect bounds = [self correctedBounds];
+    CGFloat statusInset = (self.status.length > 0) ? KVNContentViewWithStatusInset : KVNContentViewWithoutStatusInset;
+    CGFloat contentWidth;
+    
+    if (!KVNSystemVersionGreaterOrEqual_iOS_8 && [self.superview isKindOfClass:UIWindow.class]) {
+        self.transform = CGAffineTransformMakeRotation([self rotationForStatusBarOrientation]);
+    } else {
+        self.transform = CGAffineTransformIdentity;
+    }
+    
+    if ([self isFullScreen]) {
+        contentWidth = CGRectGetWidth(bounds) - (2 * KVNContentViewFullScreenModeLeadingAndTrailingSpaceConstraintConstant);
+    } else {
+        if (KVNIpad) {
+            if (minWidth < self.configuration.hudWidth) {
+                contentWidth = minWidth;
+            } else {
+                contentWidth = self.configuration.hudWidth;
+            }
+        } else {
+            contentWidth = CGRectGetWidth(bounds) - (2 * KVNContentViewNotFullScreenModeLeadingAndTrailingSpaceConstraintConstant);
+            
+            if (contentWidth > self.configuration.hudWidth) {
+                contentWidth = self.configuration.hudWidth;
+            }
+            if (minWidth < self.configuration.hudWidth) {
+                contentWidth = minWidth;
+            }
+        }
+    }
+    
+    self.circleProgressViewTopToSuperViewConstraint.constant = statusInset;
+    self.statusLabelBottomToSuperViewConstraint.constant = statusInset;
+    self.contentViewWidthConstraint.constant = contentWidth;
+    
+    [self layoutIfNeeded];
 }
 
 - (void)setupConstraints

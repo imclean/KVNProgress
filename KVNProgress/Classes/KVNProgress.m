@@ -50,7 +50,6 @@ static CGFloat const KVNContentViewWithStatusInset = 10.0f;
 static CGFloat const KVNContentViewWithoutStatusInset = 20.0f;
 static CGFloat const KVNContentViewCornerRadius = 8.0f;
 static CGFloat const KVNContentViewWithoutStatusCornerRadius = 15.0f;
-static CGFloat const KVNAlertViewWidth = 270.0f;
 static CGFloat const KVNMotionEffectRelativeValue = 10.0f;
 
 static KVNProgressConfiguration *configuration;
@@ -637,12 +636,12 @@ static KVNProgressConfiguration *configuration;
 		contentWidth = CGRectGetWidth(bounds) - (2 * KVNContentViewFullScreenModeLeadingAndTrailingSpaceConstraintConstant);
 	} else {
 		if (KVNIpad) {
-			contentWidth = KVNAlertViewWidth;
+			contentWidth = self.configuration.hudWidth;
 		} else {
 			contentWidth = CGRectGetWidth(bounds) - (2 * KVNContentViewNotFullScreenModeLeadingAndTrailingSpaceConstraintConstant);
 			
-			if (contentWidth > KVNAlertViewWidth) {
-				contentWidth = KVNAlertViewWidth;
+			if (contentWidth > self.configuration.hudWidth) {
+				contentWidth = self.configuration.hudWidth;
 			}
 		}
 	}

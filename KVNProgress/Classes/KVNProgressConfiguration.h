@@ -41,6 +41,10 @@ typedef NS_ENUM(NSUInteger, KVNProgressBackgroundType) {
  */
 @property (nonatomic, getter = doesShowStop) BOOL showStop;
 
+/**
+ * Change the width to a fixed width
+ **/
+@property (nonatomic, assign) CGFloat hudWidth;
 #pragma mark - Circle
 
 /** Color of the circle stroke. */
